@@ -9,16 +9,22 @@ export default class TodoState implements TodoInterface {
   constructor(content: string, deadline: string) {
     this.content = content;
     this.deadline = deadline;
-    this.createDateTime = Moment().format('LLL');
+    this.createDateTime = Moment().toISOString();
+
+
+
     }
 
-  getContent() {
+  getContent(): string {
     return this.content;
   }
-  getDeadline() {
+  getDeadline(): string {
     return this.deadline;
   }
-  getCreateDateTime() {
+  getCreateDateTime(): string {
     return this.createDateTime;
   };
+  getPastTime(): string {
+    return Moment(this.getCreateDateTime()).fromNow();
+    }
 }

@@ -25314,6 +25314,7 @@ class Index extends React.Component {
             deadline: '',
             todoList: [],
         };
+        // event handler
         this.handleChageContent = this.handleChageContent.bind(this);
         this.handleChageDeadline = this.handleChageDeadline.bind(this);
         this.handleClick = this.handleClick.bind(this);
@@ -25331,6 +25332,9 @@ class Index extends React.Component {
     }
     ;
     handleClick() {
+        // valivate
+        if (!this.state.content.trim() || !this.state.deadline.trim())
+            return false;
         this.setState({
             content: '',
             deadline: '',
@@ -25339,7 +25343,7 @@ class Index extends React.Component {
     }
     renderTodoList() {
         let i = 0;
-        return this.state.todoList.sort(this.sortDate).map(todo => React.createElement(todo_1.default, { key: i++, content: todo.getContent(), deadline: todo.getDeadline() }));
+        return this.state.todoList.sort(this.sortDate).map(todo => React.createElement(todo_1.default, { key: i++, content: todo.getContent(), deadline: todo.getDeadline(), pastTime: todo.getPastTime() }));
     }
     sortDate(a, b) {
         const genreA = a.getDeadline();
@@ -38002,7 +38006,7 @@ class TodoState {
     constructor(content, deadline) {
         this.content = content;
         this.deadline = deadline;
-        this.createDateTime = Moment().format('LLL');
+        this.createDateTime = Moment().toISOString();
     }
     getContent() {
         return this.content;
@@ -38014,6 +38018,9 @@ class TodoState {
         return this.createDateTime;
     }
     ;
+    getPastTime() {
+        return Moment(this.getCreateDateTime()).fromNow();
+    }
 }
 exports.default = TodoState;
 
@@ -38337,7 +38344,8 @@ const Todo = props => React.createElement("div", { className: "todo" },
         "TODO: ",
         props.content,
         ", DeadLine: ",
-        props.deadline));
+        props.deadline),
+    React.createElement("span", null, props.pastTime));
 exports.default = Todo;
 
 

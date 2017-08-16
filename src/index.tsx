@@ -17,6 +17,7 @@ export default class Index extends React.Component<IndexProps, IndexState> {
       todoList: [],
     }
 
+    // event handler
     this.handleChageContent = this.handleChageContent.bind(this);
     this.handleChageDeadline = this.handleChageDeadline.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -36,7 +37,9 @@ export default class Index extends React.Component<IndexProps, IndexState> {
     })
   };
 
-  handleClick(): void {
+  handleClick(): any {
+    // valivate
+    if(!this.state.content.trim() || !this.state.deadline.trim()) return false;
     this.setState({
       content: '',
       deadline: '',
@@ -47,7 +50,7 @@ export default class Index extends React.Component<IndexProps, IndexState> {
   renderTodoList(): any {
     let i: number = 0;
      return this.state.todoList.sort(this.sortDate).map(todo =>
-       <Todo key={i++} content={todo.getContent()} deadline={todo.getDeadline()} />
+       <Todo key={i++} content={todo.getContent()} deadline={todo.getDeadline()} pastTime={todo.getPastTime()} />
       )
   }
 
