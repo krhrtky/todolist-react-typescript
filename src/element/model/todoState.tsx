@@ -1,6 +1,8 @@
 import * as Moment from "moment";
 import TodoInterface from './interface/todoInterface';
 
+Moment.locale('ja');
+
 export default class TodoState implements TodoInterface {
   public content: string;
   public deadline: string;
@@ -10,8 +12,6 @@ export default class TodoState implements TodoInterface {
     this.content = content;
     this.deadline = deadline;
     this.createDateTime = Moment().toISOString();
-
-
 
     }
 

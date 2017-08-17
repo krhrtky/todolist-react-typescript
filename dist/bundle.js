@@ -38002,6 +38002,7 @@ module.exports = ReactDOMInvalidARIAHook;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Moment = __webpack_require__(0);
+Moment.locale('ja');
 class TodoState {
     constructor(content, deadline) {
         this.content = content;
@@ -38345,7 +38346,9 @@ const Todo = props => React.createElement("div", { className: "todo" },
         props.content,
         ", DeadLine: ",
         props.deadline),
-    React.createElement("span", null, props.pastTime));
+    React.createElement("span", null,
+        props.pastTime,
+        "\u306B\u66F4\u65B0"));
 exports.default = Todo;
 
 
