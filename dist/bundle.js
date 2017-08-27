@@ -25307,11 +25307,9 @@ const input_1 = __webpack_require__(303);
 const button_1 = __webpack_require__(304);
 const todo_1 = __webpack_require__(305);
 class Index extends React.Component {
-    constructor(props) {
+    constructor() {
         super();
         this.state = {
-            content: '',
-            deadline: '',
             todoList: [],
         };
         // event handler
@@ -25320,24 +25318,17 @@ class Index extends React.Component {
         this.handleClick = this.handleClick.bind(this);
     }
     handleChageContent(e) {
-        this.setState({
-            content: e.target.value,
-        });
+        const target = e.target;
     }
     ;
     handleChageDeadline(e) {
-        this.setState({
-            deadline: e.target.value,
-        });
+        const target = e.target;
     }
     ;
     handleClick() {
-        // valivate
-        if (!this.state.content.trim() || !this.state.deadline.trim())
-            return false;
+        const input = ReactDOM.findDOMNode(this.refs.todo);
+        console.log(input.querySelector('#content').value);
         this.setState({
-            content: '',
-            deadline: '',
             todoList: this.state.todoList.concat(new todoState_1.default(this.state.content, this.state.deadline)),
         });
     }
@@ -25358,14 +25349,14 @@ class Index extends React.Component {
         return comparison;
     }
     render() {
-        return (React.createElement("div", null,
-            React.createElement(input_1.default, { content: this.state.content, deadline: this.state.deadline, handleChageContent: this.handleChageContent, handleChageDeadline: this.handleChageDeadline }),
+        return (React.createElement("div", { ref: "todo" },
+            React.createElement(input_1.default, { handleChageContent: this.handleChageContent, handleChageDeadline: this.handleChageDeadline }),
             React.createElement(button_1.default, { handleClick: this.handleClick }),
             this.renderTodoList()));
     }
 }
 exports.default = Index;
-ReactDOM.render(React.createElement(Index, { content: "", deadline: "" }), document.getElementById('root'));
+ReactDOM.render(React.createElement(Index, null), document.getElementById('root'));
 
 
 /***/ }),
@@ -38002,7 +37993,6 @@ module.exports = ReactDOMInvalidARIAHook;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Moment = __webpack_require__(0);
-Moment.locale('ja');
 class TodoState {
     constructor(content, deadline) {
         this.content = content;
@@ -38315,8 +38305,8 @@ webpackContext.id = 302;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(25);
 const Input = props => React.createElement("div", { id: "input" },
-    React.createElement("input", { type: "text", placeholder: "Input Todo", value: props.content, onChange: props.handleChageContent }),
-    React.createElement("input", { type: "date", placeholder: "Input deadline", value: props.deadline, onChange: props.handleChageDeadline }));
+    React.createElement("input", { type: "text", id: "content", placeholder: "Input Todo", onChange: props.handleChageContent }),
+    React.createElement("input", { type: "date", id: "deadline", placeholder: "Input deadline", onChange: props.handleChageDeadline }));
 exports.default = Input;
 
 
@@ -38341,14 +38331,12 @@ exports.default = Button;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(25);
 const Todo = props => React.createElement("div", { className: "todo" },
-    React.createElement("p", null,
+    React.createElement("div", null,
         "TODO: ",
         props.content,
-        ", DeadLine: ",
-        props.deadline),
-    React.createElement("span", null,
-        props.pastTime,
-        "\u306B\u66F4\u65B0"));
+        " | DeadLine: ",
+        props.deadline,
+        React.createElement("span", null, props.pastTime)));
 exports.default = Todo;
 
 

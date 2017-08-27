@@ -1,19 +1,15 @@
-import * as React from 'react';
+import *  as React from 'react';
 import * as ReactDOM from 'react-dom';
-import IndexProps from './element/model/interface/indexProps';
 import IndexState from './element/model/interface/indexState';
-import TodoProps from './element/model/todoProps';
-import TodoState from './element/model/todoState';
+import TodoModel from './element/model/todoModel';
 import Input from './element/input';
 import Button from './element/button';
 import Todo from './element/todo';
 
-export default class Index extends React.Component<IndexProps, IndexState> {
-  constructor(props: IndexProps) {
+export default class Index extends React.Component<{}, IndexState> {
+  constructor() {
     super();
     this.state = {
-      content: '',
-      deadline: '',
       todoList: [],
     }
 
@@ -23,38 +19,37 @@ export default class Index extends React.Component<IndexProps, IndexState> {
     this.handleClick = this.handleClick.bind(this);
   }
 
-  handleChageContent(e: any): void {
-    this.setState({
-      content: e.target.value,
 
-    })
+  handleChageContent(e: Event ): void {
+    const target: HTMLInputElement = e.target as HTMLInputElement;
   };
 
-  handleChageDeadline(e: any): void {
-    this.setState({
-      deadline: e.target.value,
-
-    })
+  handleChageDeadline(e: Event): void {
+    const target: HTMLInputElement = e.target as HTMLInputElement;
   };
 
   handleClick(): any {
-    // valivate
-    if(!this.state.content.trim() || !this.state.deadline.trim()) return false;
+    const input: Element = ReactDOM.findDOMNode(this.refs.todo);
+    console.log((input.querySelector('#content') as HTMLInputElement).value);
+
     this.setState({
-      content: '',
-      deadline: '',
-      todoList: this.state.todoList.concat(new TodoState(this.state.content, this.state.deadline)),
+      todoList: this.state.todoList.concat(new TodoModel('', '')),
     })
   }
 
-  renderTodoList(): any {
+  renderTodoList(): any[] {
     let i: number = 0;
      return this.state.todoList.sort(this.sortDate).map(todo =>
-       <Todo key={i++} content={todo.getContent()} deadline={todo.getDeadline()} pastTime={todo.getPastTime()} />
-      )
+       <Todo
+        key={i++}
+        content={todo.getTitle()}
+        deadline={todo.getDeadline()}
+        pastTime={todo.getPastTime()}
+       />
+     )
   }
 
-  sortDate(a: TodoState, b: TodoState): number {
+  sortDate(a: TodoModel, b: TodoModel): number {
 
   const genreA = a.getDeadline();
   const genreB = b.getDeadline();
@@ -70,10 +65,8 @@ export default class Index extends React.Component<IndexProps, IndexState> {
 
   render() {
     return (
-      <div>
+      <div ref="todo">
         <Input
-          content={this.state.content}
-          deadline={this.state.deadline}
           handleChageContent={this.handleChageContent}
           handleChageDeadline={this.handleChageDeadline}
         / >
@@ -85,7 +78,7 @@ export default class Index extends React.Component<IndexProps, IndexState> {
 }
 
 ReactDOM.render(
-  <Index content="" deadline="" />,
+  <Index />,
   document.getElementById('root')
   );
 

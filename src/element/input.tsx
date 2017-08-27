@@ -1,11 +1,11 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import TodoProps from "./model/todoProps";
+import InputTodoProps from "./model/inputTodoProps";
 
-const Input: React.StatelessComponent<TodoProps> = props =>
+const Input: React.StatelessComponent<InputTodoProps> = props =>
   <div id="input">
-    <input type="text" placeholder="Input Todo" value={props.content} onChange={props.handleChageContent} />
-    <input type="date" placeholder="Input deadline" value={props.deadline} onChange={props.handleChageDeadline} />
+    <input type="text" id="content" placeholder="Input Todo" onChange={props.handleChageContent} />
+    <input type="date" id="deadline" placeholder="Input deadline" onChange={props.handleChageDeadline} />
   </div>
 
 export default Input;
