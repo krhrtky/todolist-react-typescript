@@ -1,10 +1,12 @@
 import { Genre } from './genre';
 import { Weight } from './weight';
+import TodoInterface from "./todoInterface";
 
 
-export default interface TodoInterface {
+export default interface TodoProps extends TodoInterface  {
   title: string;
   deadline: string;
   genre: Genre;
   weight: Weight;
+	pastTime: String;
 }

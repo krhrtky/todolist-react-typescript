@@ -5,6 +5,8 @@ import TodoModel from './element/model/todoModel';
 import Input from './element/input';
 import Button from './element/button';
 import Todo from './element/todo';
+import { Genre } from "./element/model/interface/genre";
+import { Weight } from "./element/model/interface/weight";
 
 export default class Index extends React.Component<{}, IndexState> {
   constructor() {
@@ -30,10 +32,13 @@ export default class Index extends React.Component<{}, IndexState> {
 
   handleClick(): any {
     const input: Element = ReactDOM.findDOMNode(this.refs.todo);
-    console.log((input.querySelector('#content') as HTMLInputElement).value);
+    const title = (input.querySelector('#title') as HTMLInputElement).value;
+    const deadline = (input.querySelector('#deadline') as HTMLInputElement).value;
+
+		if(!title.trim()|| !deadline.trim()) return false;
 
     this.setState({
-      todoList: this.state.todoList.concat(new TodoModel('', '')),
+      todoList: this.state.todoList.concat(new TodoModel(title, deadline, Genre.MINE, Weight.ROW )),
     })
   }
 
@@ -42,9 +47,11 @@ export default class Index extends React.Component<{}, IndexState> {
      return this.state.todoList.sort(this.sortDate).map(todo =>
        <Todo
         key={i++}
-        content={todo.getTitle()}
+        title={todo.getTitle()}
         deadline={todo.getDeadline()}
-        pastTime={todo.getPastTime()}
+        genre={todo.getGenre()}
+        weight={todo.getWeight()}
+				pastTime={todo.getPastTime()}
        />
      )
   }

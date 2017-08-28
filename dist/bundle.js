@@ -25302,10 +25302,12 @@ return zhTw;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(25);
 const ReactDOM = __webpack_require__(214);
-const todoState_1 = __webpack_require__(300);
+const todoModel_1 = __webpack_require__(300);
 const input_1 = __webpack_require__(303);
 const button_1 = __webpack_require__(304);
 const todo_1 = __webpack_require__(305);
+const genre_1 = __webpack_require__(306);
+const weight_1 = __webpack_require__(307);
 class Index extends React.Component {
     constructor() {
         super();
@@ -25327,14 +25329,17 @@ class Index extends React.Component {
     ;
     handleClick() {
         const input = ReactDOM.findDOMNode(this.refs.todo);
-        console.log(input.querySelector('#content').value);
+        const title = input.querySelector('#title').value;
+        const deadline = input.querySelector('#deadline').value;
+        if (!title.trim() || !deadline.trim())
+            return false;
         this.setState({
-            todoList: this.state.todoList.concat(new todoState_1.default(this.state.content, this.state.deadline)),
+            todoList: this.state.todoList.concat(new todoModel_1.default(title, deadline, genre_1.Genre.MINE, weight_1.Weight.ROW)),
         });
     }
     renderTodoList() {
         let i = 0;
-        return this.state.todoList.sort(this.sortDate).map(todo => React.createElement(todo_1.default, { key: i++, content: todo.getContent(), deadline: todo.getDeadline(), pastTime: todo.getPastTime() }));
+        return this.state.todoList.sort(this.sortDate).map(todo => React.createElement(todo_1.default, { key: i++, title: todo.getTitle(), deadline: todo.getDeadline(), genre: todo.getGenre(), weight: todo.getWeight(), pastTime: todo.getPastTime() }));
     }
     sortDate(a, b) {
         const genreA = a.getDeadline();
@@ -37993,27 +37998,32 @@ module.exports = ReactDOMInvalidARIAHook;
 
 Object.defineProperty(exports, "__esModule", { value: true });
 const Moment = __webpack_require__(0);
-class TodoState {
-    constructor(content, deadline) {
-        this.content = content;
+class TodoModel {
+    constructor(content, deadline, genre, weight) {
+        this.title = content;
         this.deadline = deadline;
         this.createDateTime = Moment().toISOString();
     }
-    getContent() {
-        return this.content;
+    getTitle() {
+        return this.title;
     }
     getDeadline() {
         return this.deadline;
     }
+    getGenre() {
+        return this.genre;
+    }
+    getWeight() {
+        return this.weight;
+    }
     getCreateDateTime() {
         return this.createDateTime;
     }
-    ;
     getPastTime() {
         return Moment(this.getCreateDateTime()).fromNow();
     }
 }
-exports.default = TodoState;
+exports.default = TodoModel;
 
 
 /***/ }),
@@ -38305,7 +38315,7 @@ webpackContext.id = 302;
 Object.defineProperty(exports, "__esModule", { value: true });
 const React = __webpack_require__(25);
 const Input = props => React.createElement("div", { id: "input" },
-    React.createElement("input", { type: "text", id: "content", placeholder: "Input Todo", onChange: props.handleChageContent }),
+    React.createElement("input", { type: "text", id: "title", placeholder: "Input Todo", onChange: props.handleChageContent }),
     React.createElement("input", { type: "date", id: "deadline", placeholder: "Input deadline", onChange: props.handleChageDeadline }));
 exports.default = Input;
 
@@ -38333,11 +38343,45 @@ const React = __webpack_require__(25);
 const Todo = props => React.createElement("div", { className: "todo" },
     React.createElement("div", null,
         "TODO: ",
-        props.content,
+        props.title,
         " | DeadLine: ",
         props.deadline,
+        " ",
+        props.genre,
+        props.weight,
         React.createElement("span", null, props.pastTime)));
 exports.default = Todo;
+
+
+/***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Genre;
+(function (Genre) {
+    Genre[Genre["MINE"] = 0] = "MINE";
+    Genre[Genre["RAKUS"] = 1] = "RAKUS";
+    Genre[Genre["CIRCLE"] = 2] = "CIRCLE";
+})(Genre = exports.Genre || (exports.Genre = {}));
+
+
+/***/ }),
+/* 307 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+var Weight;
+(function (Weight) {
+    Weight[Weight["ROW"] = 0] = "ROW";
+    Weight[Weight["MIDDLE"] = 1] = "MIDDLE";
+    Weight[Weight["HIGHT"] = 2] = "HIGHT";
+    Weight[Weight["NOW"] = 3] = "NOW";
+})(Weight = exports.Weight || (exports.Weight = {}));
 
 
 /***/ })
