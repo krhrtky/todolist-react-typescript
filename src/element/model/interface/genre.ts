@@ -1,5 +1,5 @@
 export enum Genre {
-  MINE,
-  RAKUS,
-  CIRCLE,
+  MINE = 0,
+  RAKUS = 1,
+  CIRCLE = 2,
 }

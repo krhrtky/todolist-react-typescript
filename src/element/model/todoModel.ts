@@ -13,6 +13,8 @@ export default class TodoModel implements TodoInterface {
   constructor(content: string, deadline: string, genre: Genre, weight: Weight) {
     this.title = content;
     this.deadline = deadline;
+		this.genre = genre;
+		this.weight = weight;
     this.createDateTime = Moment().toISOString();
 
     }

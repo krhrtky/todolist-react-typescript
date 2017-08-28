@@ -25336,6 +25336,7 @@ class Index extends React.Component {
         this.setState({
             todoList: this.state.todoList.concat(new todoModel_1.default(title, deadline, genre_1.Genre.MINE, weight_1.Weight.ROW)),
         });
+        console.log(this.state.todoList);
     }
     renderTodoList() {
         let i = 0;
@@ -25344,6 +25345,7 @@ class Index extends React.Component {
     sortDate(a, b) {
         const genreA = a.getDeadline();
         const genreB = b.getDeadline();
+        console.log(a.getGenre());
         let comparison = 0;
         if (genreA > genreB) {
             comparison = 1;
@@ -38002,6 +38004,8 @@ class TodoModel {
     constructor(content, deadline, genre, weight) {
         this.title = content;
         this.deadline = deadline;
+        this.genre = genre;
+        this.weight = weight;
         this.createDateTime = Moment().toISOString();
     }
     getTitle() {
