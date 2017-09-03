@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import IndexState from './element/model/interface/indexState';
 import TodoModel from './element/model/todoModel';
 import Input from './element/input';
+import Select from './element/select';
 import Button from './element/button';
 import Todo from './element/todo';
 import { Genre } from "./element/model/interface/genre";
@@ -31,18 +32,20 @@ export default class Index extends React.Component<{}, IndexState> {
   };
 
   handleClick(): any {
-    const input: Element = ReactDOM.findDOMNode(this.refs.todo);
+    const input: HTMLInputElement = ReactDOM.findDOMNode(this.refs.todo) as HTMLInputElement;
     const title = (input.querySelector('#title') as HTMLInputElement).value;
     const deadline = (input.querySelector('#deadline') as HTMLInputElement).value;
+    const genre = (input.querySelector('#Genre') as HTMLSelectElement).value;
+    const weight = (input.querySelector('#Weight') as HTMLSelectElement).value;
 
-		if(!title.trim()|| !deadline.trim()) return false;
+    if(!title.trim()|| !deadline.trim()) return false;
 
     this.setState({
-      todoList: this.state.todoList.concat(new TodoModel(title, deadline, Genre.MINE, Weight.ROW )),
+      todoList: this.state.todoList.concat(new TodoModel(title, deadline, (Genre as any)[genre], (Weight as any)[weight])),
     })
   }
 
-  renderTodoList(): any[] {
+  renderTodoList(): JSX.Element[] {
     let i: number = 0;
      return this.state.todoList.sort(this.sortDate).map(todo =>
        <Todo
@@ -51,32 +54,36 @@ export default class Index extends React.Component<{}, IndexState> {
         deadline={todo.getDeadline()}
         genre={todo.getGenre()}
         weight={todo.getWeight()}
-				pastTime={todo.getPastTime()}
+        pastTime={todo.getPastTime()}
        />
      )
   }
 
   sortDate(a: TodoModel, b: TodoModel): number {
 
-  const genreA = a.getDeadline();
-  const genreB = b.getDeadline();
+    const todoA = a.getDeadline();
+    const todoB = b.getDeadline();
 
-  let comparison = 0;
-  if (genreA > genreB) {
-    comparison = 1;
-  } else if (genreA < genreB) {
-    comparison = -1;
+    let comparison = 0;
+    if (todoA > todoB) {
+      comparison = 1;
+    } else if (todoA < todoB) {
+      comparison = -1;
+    }
+    return comparison;
   }
-  return comparison;
-}
 
-  render() {
+  render(): JSX.Element {
     return (
       <div ref="todo">
-        <Input
-          handleChageContent={this.handleChageContent}
-          handleChageDeadline={this.handleChageDeadline}
-        / >
+        <div>
+          <Input
+            handleChageContent={this.handleChageContent}
+            handleChageDeadline={this.handleChageDeadline}
+          / >
+          <Select id={'Genre'} obj={Genre}/>
+          <Select id={'Weight'}obj={Weight}/>
+        </div>
         <Button handleClick={this.handleClick} />
         {this.renderTodoList()}
       </div>
