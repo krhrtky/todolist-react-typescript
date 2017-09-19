@@ -9,4 +9,7 @@ export default interface TodoProps extends TodoInterface  {
   genre: Genre;
   weight: Weight;
 	pastTime: String;
+  handleClickDeadline(e: any): void;
+  handleClickGenre(e: any): void;
+  handleClickWeight(e: any): void;
 }

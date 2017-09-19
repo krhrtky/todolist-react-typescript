@@ -7423,16 +7423,6 @@ module.exports = DOMLazyTree;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-
-
-module.exports = __webpack_require__(17);
-
-
-/***/ }),
-/* 22 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 /* WEBPACK VAR INJECTION */(function(process) {/**
  * Copyright 2013-present, Facebook, Inc.
  * All rights reserved.
@@ -7445,7 +7435,7 @@ module.exports = __webpack_require__(17);
 
 
 
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(22);
 var EventPluginUtils = __webpack_require__(35);
 
 var accumulateInto = __webpack_require__(59);
@@ -7569,7 +7559,7 @@ module.exports = EventPropagators;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 23 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7849,7 +7839,7 @@ module.exports = EventPluginHub;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
 
 /***/ }),
-/* 24 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7913,7 +7903,7 @@ SyntheticEvent.augmentClass(SyntheticUIEvent, UIEventInterface);
 module.exports = SyntheticUIEvent;
 
 /***/ }),
-/* 25 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -7962,6 +7952,16 @@ var ReactInstanceMap = {
 };
 
 module.exports = ReactInstanceMap;
+
+/***/ }),
+/* 25 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+module.exports = __webpack_require__(17);
+
 
 /***/ }),
 /* 26 */
@@ -8531,7 +8531,7 @@ module.exports = TransactionImpl;
 
 
 
-var SyntheticUIEvent = __webpack_require__(24);
+var SyntheticUIEvent = __webpack_require__(23);
 var ViewportMetrics = __webpack_require__(66);
 
 var getEventModifierState = __webpack_require__(39);
@@ -10380,7 +10380,7 @@ module.exports = KeyEscapeUtils;
 var _prodInvariant = __webpack_require__(4);
 
 var ReactCurrentOwner = __webpack_require__(11);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactUpdates = __webpack_require__(12);
 
@@ -13662,7 +13662,7 @@ var ReactDOMComponentTree = __webpack_require__(6);
 var ReactDOMContainerInfo = __webpack_require__(292);
 var ReactDOMFeatureFlags = __webpack_require__(293);
 var ReactFeatureFlags = __webpack_require__(63);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactMarkupChecksum = __webpack_require__(294);
 var ReactReconciler = __webpack_require__(19);
@@ -25331,13 +25331,12 @@ var Weight;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(21);
+const React = __webpack_require__(25);
 const ReactDOM = __webpack_require__(216);
 const todoModel_1 = __webpack_require__(302);
-const input_1 = __webpack_require__(305);
-const select_1 = __webpack_require__(306);
-const button_1 = __webpack_require__(307);
-const todo_1 = __webpack_require__(308);
+const select_1 = __webpack_require__(305);
+const button_1 = __webpack_require__(306);
+const todo_1 = __webpack_require__(307);
 const genre_1 = __webpack_require__(198);
 const weight_1 = __webpack_require__(199);
 class Index extends React.Component {
@@ -25345,60 +25344,107 @@ class Index extends React.Component {
         super();
         this.state = {
             todoList: [],
+            sortBy: this.sortDate,
+            selectedSort: true,
+            deadlineAsc: true,
+            genreAsc: true,
+            weightAsc: true
         };
         // event handler
-        this.handleChageContent = this.handleChageContent.bind(this);
-        this.handleChageDeadline = this.handleChageDeadline.bind(this);
-        this.handleClick = this.handleClick.bind(this);
+        this.handleButtonClick = this.handleButtonClick.bind(this);
+        this.handleClickGenre = this.handleClickGenre.bind(this);
+        this.handleClickWeight = this.handleClickWeight.bind(this);
+        this.handleClickDeadline = this.handleClickDeadline.bind(this);
+        this.sortDate = this.sortDate.bind(this);
+        this.sortWeight = this.sortWeight.bind(this);
+        this.sortGenre = this.sortGenre.bind(this);
     }
-    handleChageContent(e) {
-        const target = e.target;
+    handleClickWeight() {
+        this.setState({
+            selectedSort: !this.state.weightAsc,
+            weightAsc: !this.state.weightAsc,
+            sortBy: this.sortWeight
+        });
     }
-    ;
-    handleChageDeadline(e) {
-        const target = e.target;
+    handleClickGenre() {
+        console.log(!this.state.genreAsc);
+        this.setState({
+            selectedSort: !this.state.genreAsc,
+            genreAsc: !this.state.genreAsc,
+            sortBy: this.sortGenre
+        });
     }
-    ;
-    handleClick() {
+    handleClickDeadline() {
+        this.setState({
+            selectedSort: !this.state.deadlineAsc,
+            deadlineAsc: !this.state.deadlineAsc,
+            sortBy: this.sortDate
+        });
+    }
+    handleButtonClick() {
         const input = ReactDOM.findDOMNode(this.refs.todo);
-        const title = input.querySelector('#title').value;
-        const deadline = input.querySelector('#deadline').value;
-        const genre = input.querySelector('#Genre').value;
-        const weight = input.querySelector('#Weight').value;
+        const title = input.querySelector("#title").value;
+        const deadline = input.querySelector("#deadline")
+            .value;
+        const genre = input.querySelector("#Genre").value;
+        const weight = input.querySelector("#Weight").value;
         if (!title.trim() || !deadline.trim())
             return false;
         this.setState({
-            todoList: this.state.todoList.concat(new todoModel_1.default(title, deadline, genre_1.Genre[genre], weight_1.Weight[weight])),
+            todoList: this.state.todoList.concat(new todoModel_1.default(title, deadline, genre_1.Genre[genre], weight_1.Weight[weight]))
         });
     }
+    sortMapper(selectedSort, callback) {
+        return !selectedSort
+            ? this.state.todoList.sort(this.state.sortBy)
+            : this.state.todoList.sort(this.state.sortBy).reverse();
+    }
     renderTodoList() {
+        console.log(this.state.todoList);
         let i = 0;
-        return this.state.todoList.sort(this.sortDate).map(todo => React.createElement(todo_1.default, { key: i++, title: todo.getTitle(), deadline: todo.getDeadline(), genre: todo.getGenre(), weight: todo.getWeight(), pastTime: todo.getPastTime() }));
+        return this.sortMapper(this.state.selectedSort, this.state.sortBy).map(todo => (React.createElement(todo_1.default, { key: i++, title: todo.getTitle(), deadline: todo.getDeadline(), genre: todo.getGenre(), weight: todo.getWeight(), pastTime: todo.getPastTime(), handleClickDeadline: this.handleClickDeadline, handleClickWeight: this.handleClickWeight, handleClickGenre: this.handleClickGenre })));
     }
     sortDate(a, b) {
-        const todoA = a.getDeadline();
-        const todoB = b.getDeadline();
-        let comparison = 0;
-        if (todoA > todoB) {
-            comparison = 1;
-        }
-        else if (todoA < todoB) {
-            comparison = -1;
-        }
-        return comparison;
+        const todoA = a.getDeadline().replace(/-/g, "");
+        const todoB = b.getDeadline().replace(/-/g, "");
+        if (todoA > todoB)
+            return 1;
+        if (todoA < todoB)
+            return -1;
+        return 0;
+    }
+    sortGenre(a, b) {
+        const todoA = a.getGenre();
+        const todoB = b.getGenre();
+        if (todoA > todoB)
+            return 1;
+        if (todoA < todoB)
+            return -1;
+        return this.sortDate(a, b);
+    }
+    sortWeight(a, b) {
+        const todoA = a.getWeight();
+        const todoB = b.getWeight();
+        if (todoA > todoB)
+            return 1;
+        if (todoA < todoB)
+            return -1;
+        return this.sortDate(a, b);
     }
     render() {
         return (React.createElement("div", { ref: "todo" },
             React.createElement("div", null,
-                React.createElement(input_1.default, { handleChageContent: this.handleChageContent, handleChageDeadline: this.handleChageDeadline }),
-                React.createElement(select_1.default, { id: 'Genre', obj: genre_1.Genre }),
-                React.createElement(select_1.default, { id: 'Weight', obj: weight_1.Weight })),
-            React.createElement(button_1.default, { handleClick: this.handleClick }),
+                React.createElement("span", { id: "input" },
+                    React.createElement("input", { type: "text", id: "title", placeholder: "Input Todo" }),
+                    React.createElement("input", { type: "date", id: "deadline", placeholder: "Input deadline" })),
+                React.createElement(select_1.default, { id: "Genre", obj: genre_1.Genre }),
+                React.createElement(select_1.default, { id: "Weight", obj: weight_1.Weight })),
+            React.createElement(button_1.default, { handleClick: this.handleButtonClick }),
             this.renderTodoList()));
     }
 }
 exports.default = Index;
-ReactDOM.render(React.createElement(Index, null), document.getElementById('root'));
+ReactDOM.render(React.createElement(Index, null), document.getElementById("root"));
 
 
 /***/ }),
@@ -28180,7 +28226,7 @@ module.exports = ARIADOMPropertyConfig;
 
 
 
-var EventPropagators = __webpack_require__(22);
+var EventPropagators = __webpack_require__(21);
 var ExecutionEnvironment = __webpack_require__(7);
 var FallbackCompositionState = __webpack_require__(221);
 var SyntheticCompositionEvent = __webpack_require__(222);
@@ -28752,8 +28798,8 @@ module.exports = SyntheticInputEvent;
 
 
 
-var EventPluginHub = __webpack_require__(23);
-var EventPropagators = __webpack_require__(22);
+var EventPluginHub = __webpack_require__(22);
+var EventPropagators = __webpack_require__(21);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactUpdates = __webpack_require__(12);
@@ -29809,7 +29855,7 @@ module.exports = DefaultEventPluginOrder;
 
 
 
-var EventPropagators = __webpack_require__(22);
+var EventPropagators = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(6);
 var SyntheticMouseEvent = __webpack_require__(30);
 
@@ -30611,7 +30657,7 @@ var DOMLazyTree = __webpack_require__(20);
 var DOMNamespaces = __webpack_require__(41);
 var DOMProperty = __webpack_require__(14);
 var DOMPropertyOperations = __webpack_require__(70);
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(22);
 var EventPluginRegistry = __webpack_require__(28);
 var ReactBrowserEventEmitter = __webpack_require__(33);
 var ReactDOMComponentFlags = __webpack_require__(58);
@@ -32181,7 +32227,7 @@ module.exports = quoteAttributeValueForBrowser;
 
 
 
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(22);
 
 function runEventQueueInBatch(events) {
   EventPluginHub.enqueueEvents(events);
@@ -32914,7 +32960,7 @@ module.exports = ReactDOMTextarea;
 var _prodInvariant = __webpack_require__(4);
 
 var ReactComponentEnvironment = __webpack_require__(44);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
 
 var ReactCurrentOwner = __webpack_require__(11);
@@ -33529,7 +33575,7 @@ var React = __webpack_require__(17);
 var ReactComponentEnvironment = __webpack_require__(44);
 var ReactCurrentOwner = __webpack_require__(11);
 var ReactErrorUtils = __webpack_require__(36);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(24);
 var ReactInstrumentation = __webpack_require__(9);
 var ReactNodeTypes = __webpack_require__(74);
 var ReactReconciler = __webpack_require__(19);
@@ -35625,7 +35671,7 @@ module.exports = getUnboundedScrollPosition;
 
 
 var DOMProperty = __webpack_require__(14);
-var EventPluginHub = __webpack_require__(23);
+var EventPluginHub = __webpack_require__(22);
 var EventPluginUtils = __webpack_require__(35);
 var ReactComponentEnvironment = __webpack_require__(44);
 var ReactEmptyComponent = __webpack_require__(75);
@@ -36555,7 +36601,7 @@ module.exports = SVGDOMPropertyConfig;
 
 
 
-var EventPropagators = __webpack_require__(22);
+var EventPropagators = __webpack_require__(21);
 var ExecutionEnvironment = __webpack_require__(7);
 var ReactDOMComponentTree = __webpack_require__(6);
 var ReactInputSelection = __webpack_require__(79);
@@ -36752,7 +36798,7 @@ module.exports = SelectEventPlugin;
 var _prodInvariant = __webpack_require__(4);
 
 var EventListener = __webpack_require__(78);
-var EventPropagators = __webpack_require__(22);
+var EventPropagators = __webpack_require__(21);
 var ReactDOMComponentTree = __webpack_require__(6);
 var SyntheticAnimationEvent = __webpack_require__(283);
 var SyntheticClipboardEvent = __webpack_require__(284);
@@ -36763,7 +36809,7 @@ var SyntheticMouseEvent = __webpack_require__(30);
 var SyntheticDragEvent = __webpack_require__(288);
 var SyntheticTouchEvent = __webpack_require__(289);
 var SyntheticTransitionEvent = __webpack_require__(290);
-var SyntheticUIEvent = __webpack_require__(24);
+var SyntheticUIEvent = __webpack_require__(23);
 var SyntheticWheelEvent = __webpack_require__(291);
 
 var emptyFunction = __webpack_require__(10);
@@ -37067,7 +37113,7 @@ module.exports = SyntheticClipboardEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(24);
+var SyntheticUIEvent = __webpack_require__(23);
 
 /**
  * @interface FocusEvent
@@ -37108,7 +37154,7 @@ module.exports = SyntheticFocusEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(24);
+var SyntheticUIEvent = __webpack_require__(23);
 
 var getEventCharCode = __webpack_require__(50);
 var getEventKey = __webpack_require__(287);
@@ -37355,7 +37401,7 @@ module.exports = SyntheticDragEvent;
 
 
 
-var SyntheticUIEvent = __webpack_require__(24);
+var SyntheticUIEvent = __webpack_require__(23);
 
 var getEventModifierState = __webpack_require__(39);
 
@@ -37695,7 +37741,7 @@ var _prodInvariant = __webpack_require__(4);
 
 var ReactCurrentOwner = __webpack_require__(11);
 var ReactDOMComponentTree = __webpack_require__(6);
-var ReactInstanceMap = __webpack_require__(25);
+var ReactInstanceMap = __webpack_require__(24);
 
 var getHostComponentFromComposite = __webpack_require__(82);
 var invariant = __webpack_require__(2);
@@ -38352,21 +38398,7 @@ webpackContext.id = 304;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(21);
-const Input = props => React.createElement("span", { id: "input" },
-    React.createElement("input", { type: "text", id: "title", placeholder: "Input Todo", onChange: props.handleChageContent }),
-    React.createElement("input", { type: "date", id: "deadline", placeholder: "Input deadline", onChange: props.handleChageDeadline }));
-exports.default = Input;
-
-
-/***/ }),
-/* 306 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(21);
+const React = __webpack_require__(25);
 const createOption = (en) => {
     const enumVal = Object.keys(en).filter(en => !Number.isNaN(parseInt(en)));
     return (enumVal.map(e => React.createElement("option", { key: e, value: en[e] }, en[e])));
@@ -38376,39 +38408,45 @@ exports.default = Select;
 
 
 /***/ }),
+/* 306 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", { value: true });
+const React = __webpack_require__(25);
+const Button = props => React.createElement("button", { onClick: props.handleClick }, "Send");
+exports.default = Button;
+
+
+/***/ }),
 /* 307 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(21);
-const Button = props => React.createElement("button", { onClick: props.handleClick }, "Send");
-exports.default = Button;
-
-
-/***/ }),
-/* 308 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", { value: true });
-const React = __webpack_require__(21);
+const React = __webpack_require__(25);
 const genre_1 = __webpack_require__(198);
 const weight_1 = __webpack_require__(199);
-const Todo = props => React.createElement("div", { className: "todo" },
+const Todo = props => (React.createElement("div", { className: "todo" },
     React.createElement("div", null,
         "TODO: ",
         props.title,
-        " | DeadLine: ",
-        props.deadline,
-        " | ",
-        genre_1.Genre[props.genre],
-        " | ",
-        weight_1.Weight[props.weight],
-        "  ",
-        React.createElement("span", null, props.pastTime)));
+        " |",
+        " ",
+        React.createElement("span", { onClick: props.handleClickDeadline },
+            "DeadLine: ",
+            props.deadline,
+            " "),
+        "|",
+        " ",
+        React.createElement("span", { onClick: props.handleClickGenre }, genre_1.Genre[props.genre]),
+        " |",
+        " ",
+        React.createElement("span", { onClick: props.handleClickWeight }, weight_1.Weight[props.weight]),
+        " ",
+        React.createElement("span", null, props.pastTime))));
 exports.default = Todo;
 
 
